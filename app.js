@@ -68,37 +68,63 @@
 // let a = mergeSort([1, 5, 8, 3, 7, 23, 45, 11, 24])
 // console.log(a)
 
-const swap = (arr, i, j) => {
-    [arr[i], arr[j]] = [arr[j], arr[i]]
+// const swap = (arr, i, j) => {
+//     [arr[i], arr[j]] = [arr[j], arr[i]]
+// }
+
+
+// function pivot(arr, start = 0, end = arr.length - 1) {
+//     let pivot = arr[start];
+//     let swapIdx = start;
+//     for (let i = start + 1; i < arr.length; i++) {
+//         if (pivot > arr[i]) {
+//             swapIdx++;
+//             swap(arr, swapIdx, i)
+//         }
+//     }
+//     swap(arr, start, swapIdx)
+//     return swapIdx
+// }
+
+
+// function quickSort(arr, left = 0, right = arr.length - 1) {
+//     let pivotIndex = pivot(arr, left, right)
+//     if (left < right) {
+//         //left
+//         quickSort(arr, left, pivotIndex - 1)
+//         //right
+//         quickSort(arr, pivotIndex + 1, right)
+//     }
+//     return arr
+// }
+
+// let a = quickSort([4, 8, 2, 1, 5, 7, 6, 3])
+// console.log(a)
+
+//RADIX SORT
+function getDigit(num, i) {
+    return Math.floor(Math.abs(num) / Math.pow(10, i)) % 10;
+}
+function digitCount(num) {
+    if (num === 0) return 1;
+    return Math.floor(Math.log10(Math.abs(num))) + 1;
+}
+function mostDigits(arr) {
+    let maxDigits = 0;
+    for (let i = 0; i < arr.length; i++) {
+        maxDigits = Math.max(maxDigits, digitCount(arr[i]))
+    }
+    return maxDigits;
 }
 
-
-function pivot(arr, start = 0, end = arr.length - 1) {
-    let pivot = arr[start];
-    let swapIdx = start;
-    for (let i = start + 1; i < arr.length; i++) {
-        if (pivot > arr[i]) {
-            swapIdx++;
-            swap(arr, swapIdx, i)
+function radixSort(nums) {
+    let maxDigitCount = mostDigits(nums)
+    for (let k = 0; k < maxDigitCount; k++) {
+        let digitBuckets = Array.from({ length: 10 }, () => [])
+        for (let i = 0; i < nums.length; i++) {
+            digitBuckets[getDigit(nums[i], k)].push(nums[i]);
         }
+        nums = [].concat(...digitBuckets);
     }
-    swap(arr, start, swapIdx)
-    return swapIdx
 }
-
-
-function quickSort(arr, left = 0, right = arr.length - 1) {
-    let pivotIndex = pivot(arr, left, right)
-    if (left < right) {
-        //left
-        quickSort(arr, left, pivotIndex - 1)
-        //right
-        quickSort(arr, pivotIndex + 1, right)
-    }
-    return arr
-}
-
-let a = quickSort([4, 8, 2, 1, 5, 7, 6, 3])
-console.log(a)
-
-
+radixSort([23, 345, 5469, 12, 2354, 9584])
